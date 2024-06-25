@@ -1,0 +1,16 @@
+name: "Process Jest Test Results"
+description: "A GitHub Action to process Jest test results"
+author: "kamesan1577"
+
+inputs:
+  artifact-name:
+    description: "The name of the artifact containing the Jest test results"
+    required: true
+
+runs:
+  using: "node20"
+  main: "index.js"
+
+branding:
+  icon: "check-circle"
+  color: "blue"
