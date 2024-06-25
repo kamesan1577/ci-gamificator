@@ -13,12 +13,15 @@ async function run() {
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
         console.log('File content:', fileContent);
+
+        // BigIntの処理を行うためのカスタムパーサーを使用
         const testResults = JSON.parse(fileContent, (key, value) => {
-            if (key === 'startTime' && typeof value === 'string') {
-                return BigInt(value);
+            if (typeof value === 'bigint') {
+                return value.toString(); // BigIntを文字列に変換
             }
             return value;
         });
+
         console.log('Jest Test Results:', testResults);
         // Add additional processing of test results here
     } else {
