@@ -6,7 +6,7 @@ const path = require('path');
 async function run() {
     try {
         const artifactName = core.getInput('artifact-name');
-        const artifactClient = artifact.DefaultArtifactClient();
+        const artifactClient = new artifact.DefaultArtifactClient();
         const downloadResponse = await artifactClient.downloadArtifact(artifactName);
         const filePath = path.join(downloadResponse.downloadPath, 'jest-results.json');
 
