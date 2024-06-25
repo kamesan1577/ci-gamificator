@@ -2,15 +2,26 @@ const core = require('@actions/core');
 const artifact = require('@actions/artifact');
 const fs = require('fs');
 const path = require('path');
+const AdmZip = require('adm-zip');
 
 async function run() {
     // try {
     const artifactName = core.getInput('artifact-name');
     const artifactClient = new artifact.DefaultArtifactClient();
     const downloadResponse = await artifactClient.downloadArtifact(artifactName);
-    const filePath = path.join(downloadResponse.downloadPath, 'jest-results.json');
+    const zipPath = path.join(downloadResponse.downloadPath, `${artifactName}.zip`);
 
-    if (fs.existsSync(filePath)) {
+    if (fs.existsSync(zipPath)) {
+        const zip = new AdmZip(zipPath);
+        const extractedPath = path.join(downloadResponse.downloadPath, "extracted");
+        zip.extractAllTo(extractedPath, true);
+
+        const filePath = path.join(extractedPath, 'test-results.json');
+        if (!fs.existsSync(filePath)) {
+            core.setFailed('Test results file not found');
+            return;
+        }
+
         const fileContent = fs.readFileSync(filePath, 'utf8');
         console.log('File content:', fileContent);
 
