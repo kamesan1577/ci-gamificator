@@ -16,10 +16,13 @@ async function run() {
         console.log(`Downloading artifact ${artifactName} to ${downloadPath}`);
         const downloadResponse = await artifactClient.downloadArtifact(artifactName, downloadPath);
         const filePath = path.join(downloadResponse.downloadPath, 'jest-results.json');
+        console.log(`Reading file: ${filePath}`)
 
         if (fs.existsSync(filePath)) {
             const data = fs.readFileSync(filePath, "utf8");
+            console.log(`File content: ${data}`);
             const jsonData = JSON.parse(data);
+            console.log(`Parsed JSON: ${jsonData}`);
             console.log(jsonData);
         } else {
             console.log(`File not found: ${filePath}`)
