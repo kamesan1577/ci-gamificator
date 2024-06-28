@@ -5,7 +5,7 @@ const path = require('path');
 
 async function run() {
     try {
-        const artifactName = core.getInput("artifact-name");
+        const artifactId = core.getInput("artifact-id");
         const artifactClient = new artifact.DefaultArtifactClient();
         const downloadPath = path.join(process.cwd(), 'downloaded-artifact');
 
@@ -13,8 +13,8 @@ async function run() {
             fs.mkdirSync(downloadPath);
         }
 
-        console.log(`Downloading artifact ${artifactName} to ${downloadPath}`);
-        const downloadResponse = await artifactClient.downloadArtifact(artifactName, downloadPath);
+        console.log(`Downloading artifact ${artifactId} to ${downloadPath}`);
+        const downloadResponse = await artifactClient.downloadArtifact(artifactId, downloadPath);
         const filePath = path.join(downloadResponse.downloadPath, 'jest-results.json');
         console.log(`Reading file: ${filePath}`)
 
