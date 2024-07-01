@@ -4,7 +4,10 @@ author: "kamesan1577"
 
 inputs:
   artifact-id:
-    description: "The id of the artifact containing the Jest test results"
+    description: "Jestの実行結果のArtifactのID"
+    required: true
+  contributor:
+    description: "ワークフローを実行したユーザー"
     required: true
 
 runs:

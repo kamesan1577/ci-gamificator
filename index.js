@@ -6,8 +6,11 @@ const path = require('path');
 async function run() {
     try {
         const artifactId = core.getInput("artifact-id");
+        const contributor = core.getInput("contributor");
         const artifactClient = new artifact.DefaultArtifactClient();
         const downloadPath = path.join(process.cwd(), 'downloaded-artifact');
+
+        const apiUrl = "www.example.com"
 
         if (!fs.existsSync(downloadPath)) {
             fs.mkdirSync(downloadPath);
@@ -24,7 +27,24 @@ async function run() {
             const jsonData = JSON.parse(data);
             console.log(`Parsed JSON: ${jsonData}`);
             console.log(jsonData);
-        } else {
+
+            const payload = {
+                artifactId: artifactId,
+                contributor: contributor,
+                apiUrl: apiUrl,
+                jsonData: jsonData,
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+            console.log(`API response: ${response.status}`);
+        }
+        else {
             console.log(`File not found: ${filePath}`)
         }
     }
